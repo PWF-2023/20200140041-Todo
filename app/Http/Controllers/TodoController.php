@@ -68,14 +68,20 @@ class TodoController extends Controller
 
     public function edit(Todo $todo)
     {
+        // if (auth()->user()->id == $todo->user_id) {
+        //     return view('todo.edit', compact('todo'));
+        // } else {
+
+        //     //abort(403);
+        //     //abort(403, 'Not authorized');
+        //     return redirect()->route('todo.index')->with('danger', 'You are not authorized to edit this todo!');
+        // }
+
         if (auth()->user()->id == $todo->user_id) {
             return view('todo.edit', compact('todo'));
-        } else {
-
-            //abort(403);
-            //abort(403, 'Not authorized');
-            return redirect()->route('todo.index')->with('danger', 'You are not authorized to edit this todo!');
         }
+
+        return redirect()->route('todo.index')->with('danger', 'You are not authorized to edit this todo!');
     }
 
     public function update(Request $request, Todo $todo)
@@ -98,14 +104,23 @@ class TodoController extends Controller
 
     public function complete(Todo $todo)
     {
+        // if (auth()->user()->id == $todo->user_id) {
+        //     $todo->update([
+        //         'is_complete' => true,
+        //     ]);
+        //     return redirect()->route('todo.index')->with('success', 'Todo completed successfully');
+        // } else {
+        //     return redirect()->route('todo.index')->with('danger', 'You are not authorized to complete this todo!');
+        // }
+
         if (auth()->user()->id == $todo->user_id) {
             $todo->update([
                 'is_complete' => true,
             ]);
             return redirect()->route('todo.index')->with('success', 'Todo completed successfully');
-        } else {
-            return redirect()->route('todo.index')->with('danger', 'You are not authorized to complete this todo!');
         }
+        return redirect()->route('todo.index')->with('danger', 'You are not authorized to complete this todo!');
+
     }
 
     public function uncomplete(Todo $todo)
